@@ -1,0 +1,20 @@
+<powershell>
+# Set execution policy to allow script execution
+Set-ExecutionPolicy Bypass -Scope Process -Force
+
+# Download and install Google Chrome silently
+$ChromeInstaller = "$env:TEMP\chrome_installer.exe"
+Invoke-WebRequest "https://dl.google.com/chrome/install/latest/chrome_installer.exe" -OutFile
+$ChromeInstaller
+Start-Process -FilePath $ChromeInstaller -Args "/silent /install" -Wait Remove-Item $ChromeInstaller
+
+# Download and install Python 3.11 silently
+$PythonInstaller = "$env:TEMP\python_installer.exe"
+Invoke-WebRequest "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
+-OutFile $PythonInstaller
+Start-Process -FilePath $PythonInstaller -Args "/quiet InstallAllUsers=1 PrependPath=1" -Wait Remove-Item $PythonInstaller
+
+# Verify installations
+Write-Output "Chrome installed: $(Test-Path 'C:\Program Files\Google\Chrome\Application\chrome.exe')"
+Write-Output "Python installed: $(python --version 2>&1)"
+</powershell>
